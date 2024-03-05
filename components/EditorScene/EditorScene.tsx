@@ -88,7 +88,8 @@ const EditorScene: FC = () => {
 
   return (
     <>
-      <ambientLight intensity={5} />
+      <ambientLight intensity={0.5} />
+      <pointLight position={[10, 10, 10]} intensity={2} color="white" />
       <directionalLight />
       <Selection>
         <EffectComposer multisampling={8} autoClear={false} disableNormalPass={true}>

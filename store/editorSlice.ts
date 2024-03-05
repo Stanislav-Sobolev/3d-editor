@@ -49,7 +49,7 @@ const editorSlice = createSlice({
       if (state.selectedPlaneIndex !== null) {
         const prevObjectState = { ...state.objects[state.selectedPlaneIndex] };
         state.history.push(prevObjectState);
-        state.history = state.history.slice(-20);
+        state.history = state.history.slice(-50);
         
         state.objects[state.selectedPlaneIndex].height = action.payload;
       }
