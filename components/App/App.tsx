@@ -4,10 +4,11 @@ import GUI from 'lil-gui';
 import { OrbitControls } from '@react-three/drei';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { RootState} from '../store/store';
-import { setSelection, setWidth, setHeight, undo } from '../store/editorSlice';
+import { RootState} from '../../store/store';
+import { setSelection, setWidth, setHeight, undo } from '../../store/editorSlice';
 
-import EditorScene from '../components/EditorScene';
+import EditorScene from '../EditorScene/EditorScene';
+import styles from './App.module.scss';
 
 const App: React.FC = () => {
   const dispatch = useDispatch();
@@ -41,18 +42,20 @@ const App: React.FC = () => {
       gui.add(undoHandler, 'undo');
   }, [])
   
-    
+    console.log(styles)
   return (
     <>
-    <Canvas 
-    camera={{ position: [0, 0, 5] }}
-    >
-      <Suspense fallback={null}>
-        <EditorScene />
-        {process.env.NEXT_APP_ENV === 'development' && <OrbitControls minPolarAngle={0} maxPolarAngle={Math.PI / 2.1} />}
-
-      </Suspense>
-    </Canvas>
+    <div className={styles.appContainer}>
+      <Canvas>
+        <Suspense fallback={null}>
+          <EditorScene />
+          {process.env.NEXT_APP_ENV === 'development' && <OrbitControls 
+          minPolarAngle={0} 
+          maxPolarAngle={Math.PI / 2.1} 
+          />}
+        </Suspense>
+      </Canvas>
+    </div>
     </>
   );
 }

@@ -2,7 +2,7 @@ import React from 'react'
 import Head from 'next/head'
 import { Provider } from 'react-redux';
 import { store } from '../store/store';
-import App from '../components/App';
+import App from '../components/App/App';
 
 const Home: React.FC = () => (
   <>
