@@ -15,11 +15,11 @@ const initialState: EditorState = {
   selectedPlaneIndex: null,
   objects: {
     1: {
-      width: 1,
-      height: 3,
+      width: 2,
+      height: 1,
     },
     2: {
-      width: 2,
+      width: 1,
       height: 3,
     },
   },

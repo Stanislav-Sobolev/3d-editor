@@ -44,10 +44,13 @@ const App: React.FC = () => {
     
   return (
     <>
-    <Canvas camera={{ position: [0, 0, 5] }}>
+    <Canvas 
+    camera={{ position: [0, 0, 5] }}
+    >
       <Suspense fallback={null}>
         <EditorScene />
-        {process.env.REACT_APP_ENV === 'development' && <OrbitControls />}
+        {process.env.NEXT_APP_ENV === 'development' && <OrbitControls minPolarAngle={0} maxPolarAngle={Math.PI / 2.1} />}
+
       </Suspense>
     </Canvas>
     </>

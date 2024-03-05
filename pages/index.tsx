@@ -13,7 +13,7 @@ const Home: React.FC = () => (
     <Provider store={store}>
       <App />
     </Provider>
-    </>
+  </>
 );
 
 export default Home
