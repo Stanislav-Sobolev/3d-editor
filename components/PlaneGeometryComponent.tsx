@@ -82,7 +82,7 @@ const PlaneGeometryComponent: React.FC<PlaneGeometryComponentProps> = ({
       <Text 
         visible={hover}
         font='/BebasNeue-Regular.ttf'
-        position={[meshPosition[0], meshPosition[1] + 0.1, meshPosition[2]]}
+        position={[meshPosition[0], meshPosition[1] + 0.1, meshPosition[2] + 0.1]}
         scale={[5,5,5]}
         color="white"
         fontSize={0.1}

@@ -1,14 +1,14 @@
-version: '3.5'
-
-services:
-  my-nextjs-app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: 3d-editor
-    ports:
-      - "8080:8080"
-    volumes:
-      - .:/app
-      - /app/node_modules
+version: '3.5' 
+ 
+services: 
+  my-nextjs-app: 
+    build: 
+      context: . 
+      dockerfile: Dockerfile 
+    container_name: 3d-editor 
+    ports: 
+      - "8080:3000" 
+    volumes: 
+      - .:/app 
+      - /app/node_modules 
       - /app/.next
