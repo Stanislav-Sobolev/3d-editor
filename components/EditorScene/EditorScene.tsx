@@ -1,24 +1,22 @@
-import React, { useEffect, useRef } from 'react';
-import * as THREE from 'three';
-import { useTexture } from '@react-three/drei';
-import { Selection, EffectComposer, Outline } from '@react-three/postprocessing';
-import PlaneGeometryComponent from '../PlaneGeometryComponent';
+import { useEffect, useRef, FC } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../store/store';
 import { setSelection, deselect } from '../../store/editorSlice';
-import { Vector3, Box3, PerspectiveCamera } from 'three';
+import { Vector3, Box3, PerspectiveCamera, Group } from 'three';
 import { useFrame, useThree } from '@react-three/fiber';
+import { OrbitControls, useTexture } from '@react-three/drei';
+import { Selection, EffectComposer, Outline } from '@react-three/postprocessing';
+import PlaneGeometryComponent from '../PlaneGeometryComponent';
 
-
-const EditorScene: React.FC = () => {
+const EditorScene: FC = () => {
   const dispatch = useDispatch();
   const stateColumns = useSelector((state: RootState) => state.editor.objects);
   const { scene, camera } = useThree();
-  const cameraRef = useRef<PerspectiveCamera>(new PerspectiveCamera());
 
-  const groupRef = useRef<THREE.Group>(new THREE.Group());
-  const boxHelperRef = useRef<THREE.BoxHelper>(new THREE.BoxHelper(new THREE.Object3D(), 0xff0000));
-  const boundingBoxRef = useRef<THREE.Box3>(new THREE.Box3());
+  const groupRef = useRef<Group>(new Group());
+  const boundingBoxRef = useRef<Box3>(new Box3());
+
+  const shouldRotateCamera = process.env.NEXT_APP_ENV !== 'development';
 
   const handlePlaneSelect = (index: number) => {
     dispatch(setSelection(index));
@@ -48,10 +46,8 @@ const EditorScene: React.FC = () => {
       boundingBoxRef.current.expandByPoint(box.min);
       boundingBoxRef.current.expandByPoint(box.max);
     });
-
-    boxHelperRef.current.setFromObject(groupRef.current);
   };
-  
+
   useEffect(() => {
     updateBoundingBoxHelper();
   }, [stateColumns]);
@@ -62,37 +58,38 @@ const EditorScene: React.FC = () => {
     if (boundingBox.isEmpty()) {
       return;
     }
-    
+
     const size = boundingBox.getSize(new Vector3());
     const maxDim = Math.max(size.x, size.y, size.z);
-    
+
     if (camera) {
       const fov = (camera as PerspectiveCamera).fov || 50;
-      
+
       const distance = maxDim / (2 * Math.tan(fov * Math.PI / 360));
-      
+
       camera.position.copy(new Vector3(size.x / 2, size.y / 2, size.z / 2));
       camera.position.z += 1.1 * distance;
-      console.log(distance)
-      
-      camera.lookAt(new Vector3(size.x / 2, size.y/2, size.z / 2));
 
+      camera.lookAt(new Vector3(size.x / 2, size.y / 2, size.z / 2));
     }
   };
 
   useEffect(() => {
-    centerCameraOnObject();
+    if (!shouldRotateCamera) {
+      centerCameraOnObject();
+    }
   }, [scene]);
 
   useFrame(() => {
-    centerCameraOnObject();
+    if (!shouldRotateCamera) {
+      centerCameraOnObject();
+    }
   });
 
   return (
     <>
       <ambientLight intensity={5} />
       <directionalLight />
-      <axesHelper args={[5]} />
       <Selection>
         <EffectComposer multisampling={8} autoClear={false} disableNormalPass={true}>
           <Outline blur edgeStrength={20} width={10000} />
@@ -119,8 +116,8 @@ const EditorScene: React.FC = () => {
             onDeselect={handlePlaneDeselect}
           />
         </group>
-        {boxHelperRef.current && <primitive object={boxHelperRef.current} />}
       </Selection>
+      {shouldRotateCamera && <OrbitControls />}
     </>
   );
 };
