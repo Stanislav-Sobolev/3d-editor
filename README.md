@@ -2,7 +2,9 @@
 
 Use node v18.17.0
 
-First, run the development server:
+npm install
+
+Then, run the development server:
 
 ```bash
 npm run dev
