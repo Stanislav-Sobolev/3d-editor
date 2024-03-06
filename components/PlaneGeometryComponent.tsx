@@ -18,6 +18,7 @@ interface PlaneGeometryComponentProps {
   rotation: [number, number, number];
   height: number;
   wallTextures: WallTextures;
+  camDistance: number;
   onSelect: (width: number, height: number) => void;
   onDeselect: () => void;
 }
@@ -28,6 +29,7 @@ const PlaneGeometryComponent: React.FC<PlaneGeometryComponentProps> = ({
   meshPosition,
   rotation,
   wallTextures,
+  camDistance,
   onSelect,
   onDeselect,
 }) => {
@@ -74,10 +76,10 @@ const PlaneGeometryComponent: React.FC<PlaneGeometryComponentProps> = ({
       <Text
         visible={hover}
         font='/BebasNeue-Regular.ttf'
-        position={[meshPosition[0], meshPosition[1] + 0.1, meshPosition[2] + 0.1]}
-        scale={[5, 5, 5]}
+        position={[meshPosition[0], meshPosition[1], meshPosition[2] + 0.1]}
+        scale={[1, 1, 1]}
         color="white"
-        fontSize={0.1}
+        fontSize={0.1*camDistance}
         anchorX="center"
         anchorY="middle"
       >

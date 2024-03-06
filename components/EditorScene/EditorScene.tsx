@@ -1,4 +1,4 @@
-import { useEffect, useRef, FC } from 'react';
+import { useEffect, useRef, FC, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../store/store';
 import { setSelection, deselect } from '../../store/editorSlice';
@@ -12,6 +12,7 @@ const EditorScene: FC = () => {
   const dispatch = useDispatch();
   const stateColumns = useSelector((state: RootState) => state.editor.objects);
   const { scene, camera } = useThree();
+  const [camDistance, setCamDistance ] = useState<number>(1);
 
   const groupRef = useRef<Group>(new Group());
   const boundingBoxRef = useRef<Box3>(new Box3());
@@ -66,11 +67,13 @@ const EditorScene: FC = () => {
       const fov = (camera as PerspectiveCamera).fov || 50;
 
       const distance = maxDim / (2 * Math.tan(fov * Math.PI / 360));
+      setCamDistance(distance);
+      const boundingBoxHalfSizes = new Vector3(size.x , size.y / 2, size.z);
 
-      camera.position.copy(new Vector3(size.x / 2, size.y / 2, size.z / 2));
-      camera.position.z += 1.1 * distance;
+      camera.position.copy(boundingBoxHalfSizes);
+      camera.position.z += 1.8 * distance;
 
-      camera.lookAt(new Vector3(size.x / 2, size.y / 2, size.z / 2));
+      camera.lookAt(boundingBoxHalfSizes);
     }
   };
 
@@ -102,6 +105,7 @@ const EditorScene: FC = () => {
             meshPosition={[0, 0, 0]}
             rotation={[0, 0, 0]}
             height={1}
+            camDistance={camDistance}
             wallTextures={wallTextures}
             onSelect={handlePlaneSelect}
             onDeselect={handlePlaneDeselect}
@@ -112,6 +116,7 @@ const EditorScene: FC = () => {
             meshPosition={[(stateColumns[1].width), 0, 0]}
             rotation={[0, 0, 0]}
             height={1}
+            camDistance={camDistance}
             wallTextures={wallTextures}
             onSelect={handlePlaneSelect}
             onDeselect={handlePlaneDeselect}

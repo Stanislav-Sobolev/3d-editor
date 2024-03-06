@@ -41,9 +41,7 @@ const App: React.FC = () => {
   return (
     <>
       <div className={styles.appContainer}>
-        <Canvas
-          camera={{ position: [0, 0, 5] }}
-        >
+        <Canvas>
           <Suspense fallback={null}>
             <EditorScene />
           </Suspense>
